@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spin : MonoBehaviour
 {
-    [SerializeField] float xAngle = 0.5f;
+    [SerializeField] float xAngle = 3f;
     [SerializeField] float yAngle = 0;
     [SerializeField] float zAngle = 0;
     // Update is called once per frame

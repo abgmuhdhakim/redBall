@@ -7,14 +7,16 @@ public class Move : MonoBehaviour
     public float forceValue;
     public float jumpValue;
     private Rigidbody rb;
-    private AudioSource audiosource;
+    AudioSource audios;
+    [SerializeField] AudioClip coinSound;
+    [SerializeField] AudioClip jumpSound;
     [SerializeField] private FixedJoystick joystick;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        audiosource = GetComponent<AudioSource>();
+        audios = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -26,7 +28,7 @@ public class Move : MonoBehaviour
         if(Input.GetButtonDown("Jump") && Mathf.Abs(rb.velocity.y) < 0.01f)
         {
             rb.AddForce(Vector3.up * jumpValue, ForceMode.Impulse);
-            audiosource.Play();
+            audios.PlayOneShot(jumpSound);
         }
 
         //quit game
@@ -49,7 +51,7 @@ public class Move : MonoBehaviour
         if(Mathf.Abs(rb.velocity.y) < 0.01f)
             {
                 rb.AddForce(Vector3.up * jumpValue, ForceMode.Impulse);
-                audiosource.Play();
+                audios.PlayOneShot(jumpSound);
             }
     }
 
@@ -69,12 +71,11 @@ public class Move : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            print("Collision");
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.tag == "Reward")
         {
-            print("Collision");
+            audios.PlayOneShot(coinSound);
             Destroy(collision.gameObject);
         }
     }
