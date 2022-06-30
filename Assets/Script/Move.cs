@@ -1,23 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Move : MonoBehaviour
 {
     public float forceValue;
     public float jumpValue;
+    public float coin;
+    public float health;
+    public TextMeshProUGUI OutputText;
+    public TextMeshProUGUI OutputText2;
     private Rigidbody rb;
     AudioSource audios;
+    bool yes;
     [SerializeField] AudioClip coinSound;
     [SerializeField] AudioClip jumpSound;
+    [SerializeField] AudioClip hit;
     [SerializeField] private FixedJoystick joystick;
+    [SerializeField] GameObject Ouch;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         audios = GetComponent<AudioSource>();
+        health = 10f;
+        yes = false;
     }
+
+    
 
     // Update is called once per frame
     void Update()
@@ -36,7 +49,12 @@ public class Move : MonoBehaviour
         {
             Application.Quit();
         }
-
+        OutputText.text = coin.ToString();
+        OutputText2.text = health.ToString();
+        if(yes == true)
+        {
+            Invoke("damm",0.1f);
+        }
         //Jump for mobile(for screen)
         /*if (Input.touchCount == 1)
             if(Input.touches[0].phase == TouchPhase.Began && Mathf.Abs(rb.velocity.y) < 0.01f)
@@ -44,6 +62,12 @@ public class Move : MonoBehaviour
                 rb.AddForce(Vector3.up * jumpValue, ForceMode.Impulse);
                 audiosource.Play();
             }*/
+    }
+    
+    void damm()
+    {
+        Ouch.SetActive(false);
+        yes = false;
     }
 
     public void jump()
@@ -72,16 +96,20 @@ public class Move : MonoBehaviour
         if (collision.gameObject.tag == "Enemy")
         {
             Destroy(collision.gameObject);
-        }
-        else if (collision.gameObject.tag == "Reward")
-        {
-            audios.PlayOneShot(coinSound);
-            Destroy(collision.gameObject);
+            health--;
+            Ouch.SetActive(true);
+            yes = true;
+            audios.PlayOneShot(hit);
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider collision)
     {
-        print("I'm inside the area!");
+        if (collision.gameObject.tag == "Reward")
+        {
+            audios.PlayOneShot(coinSound);
+            Destroy(collision.gameObject);
+            coin ++;
+        }
     }
 }

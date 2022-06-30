@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39326a527cfdee544a1fb9f330f11234, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -112,6 +112,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceValue: 5
   jumpValue: 10
+  coinSound: {fileID: 0}
+  jumpSound: {fileID: 0}
+  joystick: {fileID: 0}
 --- !u!54 &8451407029558291799
 Rigidbody:
   m_ObjectHideFlags: 0
